@@ -1,0 +1,9 @@
+open 192.168.2.183
+user anonymous 123
+lcd D:\24chat
+prompt off 
+bin 
+mget chatClient.py
+mget localSettings.txt
+mget update.txt
+bye 
