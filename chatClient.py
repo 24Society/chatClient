@@ -43,7 +43,7 @@ def to_dict(s: str) -> dict:
 loc_settings = to_dict(open('localSettings.txt', 'r').read())
 HOST = loc_settings['def_ip']
 PORT = int(loc_settings['def_port'])
-client_data = {'ver': 0.5}
+client_data = {'ver': 1.0}
 
 
 def local_setting():
@@ -240,7 +240,7 @@ def receive_messages():
                     break
             client_socket.setblocking(True)
             tmp = tmp.split(' ')
-            # print(tmp)
+            print(tmp)
             cmd = tmp[0]
             if cmd == 'message':
                 send_name = tmp[1]
