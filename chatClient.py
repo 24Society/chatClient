@@ -5,7 +5,7 @@ from os import system, path
 from re import sub
 from time import sleep
 from tkinter import font, Tk, Text, Scrollbar, Menu, Button, DISABLED, NORMAL, Label, Entry, messagebox as msg, \
-    BooleanVar
+    BooleanVar, Checkbutton, IntVar
 
 
 def refresh(s: socket.socket):
@@ -18,7 +18,7 @@ def refresh(s: socket.socket):
     s.setblocking(True)
 
 
-def center(window: Tk, x=210, y=110):
+def center(window: Tk, x=210, y=120):
     width = window.winfo_screenwidth()
     height = window.winfo_screenheight()
     center_x = int((width - x) / 2)
@@ -43,7 +43,7 @@ def to_dict(s: str) -> dict:
 loc_settings = to_dict(open('localSettings.txt', 'r').read())
 HOST = loc_settings['def_ip']
 PORT = int(loc_settings['def_port'])
-client_data = {'ver': 1.0}
+client_data = {'ver': 1.1}
 
 
 def local_setting():
@@ -128,11 +128,21 @@ usr.focus_set()
 Label(win, text='密码：').place(x=10, y=40)
 pwd = Entry(win, show='*')
 pwd.place(x=70, y=40, width=120)
+var = BooleanVar()
+show_pwd = Checkbutton(win, text='显示密码', variable=var)
+show_pwd.place(x=70, y=60)
 logged = False
 usr_settings = {}
 usrname = ''
 passwd = ''
 group_name = 'public'
+
+
+def modify_show_pwd():
+    if var.get():
+        pwd.config(show='')
+    else:
+        pwd.config(show='*')
 
 
 def log():
@@ -193,8 +203,9 @@ def reg():
         win.attributes('-topmost', True)
 
 
-Button(win, text='确定', command=log).place(x=40, y=80, width=60, height=20)
-Button(win, text='注册', command=reg).place(x=120, y=80, width=60, height=20)
+show_pwd.config(command=modify_show_pwd)
+Button(win, text='确定', command=log).place(x=40, y=90, width=60, height=20)
+Button(win, text='注册', command=reg).place(x=120, y=90, width=60, height=20)
 
 win.mainloop()
 
@@ -240,7 +251,7 @@ def receive_messages():
                     break
             client_socket.setblocking(True)
             tmp = tmp.split(' ')
-            print(tmp)
+            # print(tmp)
             cmd = tmp[0]
             if cmd == 'message':
                 send_name = tmp[1]
@@ -370,14 +381,32 @@ def modify_password():
     mod_p.title('更改密码')
     mod_p.attributes('-topmost', True)
     mod_p.focus_force()
-    center(mod_p)
+    center(mod_p, x=240)
     Label(mod_p, text='旧密码：').place(x=10, y=10)
     old_pwd = Entry(mod_p, show='*')
     old_pwd.place(x=70, y=10, width=120)
     old_pwd.focus_set()
+    var1 = BooleanVar(mod_p)
+    show_old_pwd = Checkbutton(mod_p, text='显示旧密码', variable=var1)
+    show_old_pwd.place(x=130, y=10)
     Label(mod_p, text='新密码：').place(x=10, y=40)
     new_pwd = Entry(mod_p, show='*')
     new_pwd.place(x=70, y=40, width=120)
+    var2 = BooleanVar(mod_p)
+    show_new_pwd = Checkbutton(mod_p, text='显示新密码', variable=var2)
+    show_new_pwd.place(x=130, y=40)
+
+    def modify_show_old_pwd():
+        if var1.get():
+            old_pwd.config(show='')
+        else:
+            old_pwd.config(show='*')
+
+    def modify_show_new_pwd():
+        if var2.get():
+            new_pwd.config(show='')
+        else:
+            new_pwd.config(show='*')
 
     def save():
         global passwd, cmd_recv
@@ -405,6 +434,8 @@ def modify_password():
             msg.showerror('错误', '无法更改为此密码：' + recv[1])
             mod_p.attributes('-topmost', True)
 
+    show_old_pwd.config(command=modify_show_old_pwd)
+    show_new_pwd.config(command=modify_show_new_pwd)
     Button(mod_p, text='确定', command=save).place(x=40, y=80, width=60, height=20)
     Button(mod_p, text='取消', command=mod_p.destroy).place(x=120, y=80, width=60, height=20)
 
@@ -579,7 +610,7 @@ def create_group():
     group_n.place(x=70, y=10, width=120)
     group_n.focus_set()
     Label(create_g, text='入群密码：').place(x=10, y=40)
-    group_pwd = Entry(create_g, show='*')
+    group_pwd = Entry(create_g)
     group_pwd.place(x=70, y=40, width=120)
 
     def save():
@@ -667,7 +698,7 @@ def join():
     group_n.place(x=70, y=10, width=120)
     group_n.focus_set()
     Label(join_g, text='入群密码：').place(x=10, y=40)
-    group_pwd = Entry(join_g, show='*')
+    group_pwd = Entry(join_g)
     group_pwd.place(x=70, y=40, width=120)
 
     def save():
