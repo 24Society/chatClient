@@ -774,6 +774,10 @@ def withdraw():
     cmd_recv = ''
 
 
+def launch_yi():
+    system('start /d yi python yiLauncher.py')
+
+
 menu = Menu(win)
 win.config(menu=menu)
 loc_settings_menu = Menu(menu, tearoff=0)
@@ -806,6 +810,10 @@ grp_menu.add_separator()
 grp_menu.add_command(label='创建群聊', command=create_group)
 grp_menu.add_command(label='进入群聊', command=enter)
 grp_menu.add_command(label='加入群聊', command=join)
+
+game_menu = Menu(menu, tearoff=0)
+menu.add_cascade(label='游戏', menu=game_menu)
+game_menu.add_command(label='贪吃易', command=launch_yi)
 
 bt1 = Button(win, text='发送')
 bt1['command'] = send_message

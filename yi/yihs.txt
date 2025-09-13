@@ -1,0 +1,7 @@
+'Classic' : 42,
+'Box' : 0,
+'Tunnel' : 0,
+'Mill' : 0,
+'Rails' : 0,
+'Apartment' : 0,
+'test' : 23,
