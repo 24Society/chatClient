@@ -3,6 +3,7 @@
 Current version: v1.2
 
 Update.txt is a script depend on FTP.
+Before using, remember to edit `localSettings.txt` and `update.txt`.
 
 It should be used with chatServer.
 

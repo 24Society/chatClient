@@ -43,7 +43,7 @@ def to_dict(s: str) -> dict:
 loc_settings = to_dict(open('localSettings.txt', 'r').read())
 HOST = loc_settings['def_ip']
 PORT = int(loc_settings['def_port'])
-client_data = {'ver': 1.1}
+client_data = {'ver': 1.2}
 
 
 def local_setting():
